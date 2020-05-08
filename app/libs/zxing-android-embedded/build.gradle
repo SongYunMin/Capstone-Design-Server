@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+    }
+}
+
+subprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenLocal()
+    }
+
+    version = '4.1.0'
+    group = 'com.journeyapps'
+
+    ext.androidTargetSdk = 28
+    ext.zxingCore = 'com.google.zxing:core:3.4.0'
+}
