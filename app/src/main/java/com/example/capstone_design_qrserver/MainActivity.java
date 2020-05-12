@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
@@ -35,7 +36,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 HttpConnectThread http = new HttpConnectThread(
                         "http://210.124.110.96/admission.php",
-                        "localhash" + Local_hash);
+                        "localhash=" + Local_hash);
+                http.start();
+                String temp = http.GetResult();
+                // 예약이 되어있는 티켓이라면?
+                if(temp.equals("true\n")){
+                    // 티켓 일치시 구현부
+                }
+                // 예약이 되어있는 티켓이 아니라면?
+                else{
+
+                }
+
                 qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
                 // todo
             }
