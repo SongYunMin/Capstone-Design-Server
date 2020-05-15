@@ -5,35 +5,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:padding="20dp"
     android:background="#1C1C1C">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fair Ticket"
+            android:textSize="80dp"
+            android:fontFamily="@font/seoulnamsanb"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Server Application"
+            android:textSize="40dp"
+            android:fontFamily="@font/seoulnamsanb"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:gravity="center"
+        >
     <Button
         android:id="@+id/btnConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="연결"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fontFamily="@font/seoulnamsanb"
+        android:background="#086A87"
+        android:width="1dp"
+        android:layout_marginTop="8dp"
+        android:text="BT연결"
+        android:textColor="#FFFFFF"
+        />
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/seoulnamsanb"
         android:layout_marginTop="8dp"
-        android:text="보내기"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnConnect" />
+        android:background="#086A87"
+        android:text="TEST 보내기"
+        android:textColor="#FFFFFF"
+        />
 
     <Button
         android:id="@+id/QRMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:background="#086A87"
         android:text="QR모드"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnConnect" />
+        android:textColor="#FFFFFF"
+        />
+
+</LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사용 방법"
+        android:textSize="40dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. 'BT연결'을 누르세요"
+        android:textSize="20dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="left"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. 연결할 블루투스 모듈을 선택하세요"
+        android:textSize="20dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. 연결후에 'QR모드'로 진입하세요"
+        android:textSize="20dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. 해싱된 QR코드를 Read하세요"
+        android:textSize="20dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. 블루투스 모듈에 테스트를 하려면 'TEST 보내기'를 누르세요"
+        android:textSize="20dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"
+        android:textColor="#FFFFFF"
+        />
 
 </LinearLayout>
