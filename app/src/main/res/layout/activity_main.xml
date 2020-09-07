@@ -48,7 +48,7 @@
         <Button
             android:id="@+id/btnConnect"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:width="1dp"
             android:background="#086A87"
