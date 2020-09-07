@@ -144,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 Local_hash = result.getContents();
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 HttpConnectThread http = new HttpConnectThread(
-                        "http://210.124.110.96/admission.php",
+                        "http://192.168.0.11/admission.php",
                         "localhash=" + Local_hash);
                 http.start();
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 5000; i++) {
                     System.out.println("Test");
                 }
 
