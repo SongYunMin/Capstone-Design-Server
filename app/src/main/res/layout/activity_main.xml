@@ -44,17 +44,17 @@
 
         android:gravity="center"
         >
-    <Button
-        android:id="@+id/btnConnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/seoulnamsanb"
-        android:background="#086A87"
-        android:width="1dp"
-        android:layout_marginTop="8dp"
-        android:text="BT연결"
-        android:textColor="#FFFFFF"
-        />
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:width="1dp"
+            android:background="#086A87"
+            android:fontFamily="@font/seoulnamsanb"
+            android:text="BT연결"
+            android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnSend"

@@ -9,9 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.capstone_design_qrserver.HttpConnectThread;
-import com.example.capstone_design_qrserver.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -43,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
+        //연결됐을 때
+        bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
             public void onDeviceConnected(String name, String address) {
                 Toast.makeText(getApplicationContext()
                         , "Connected to " + name + "\n" + address
                         , Toast.LENGTH_SHORT).show();
             }
+
 
             public void onDeviceDisconnected() { //연결해제
                 Toast.makeText(getApplicationContext()
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void startQR() {
         qrScan = new IntentIntegrator(this);
-        qrScan.setCameraId(1);                          // 전면카메라 사용
         qrScan.setOrientationLocked(false);
+        qrScan.setCameraId(1);                          // 전면카메라 사용
         qrScan.initiateScan();
     }
 
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         "localhash=" + Local_hash);
                 http.start();
                 for (int i = 0; i < 10000; i++) {
-                    System.out.println("qwe");
+                    System.out.println("Test");
                 }
 
                 // 웹서버 결과값 받음
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     bt.send("0",true);// 티켓 불일치시 구현부
                 }
-                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
+//                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
             }
         }
     }
