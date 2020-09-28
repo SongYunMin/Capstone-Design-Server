@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     private BluetoothSPP bt;
     public String Local_hash;
+    public Button nfcButton = findViewById(R.id.NFCMode);
+    public Button QRButton = findViewById(R.id.QRMode);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
                     , Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        nfcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NFCActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() { //데이터 수신
             public void onDataReceived(byte[] data, String message) {
@@ -72,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button QRmod = findViewById(R.id.QRMode);
-        QRmod.setOnClickListener(new View.OnClickListener() {
+        QRButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startQR();
             }
@@ -155,11 +165,11 @@ public class MainActivity extends AppCompatActivity {
                 String temp = http.GetResult();
                 // 예약이 되어있는 티켓이라면?
                 if (temp.equals("true\n")) { // 티켓 일치시 구현부
-                    bt.send("1",true);
+                    bt.send("1", true);
                 }
                 // 예약이 되어있는 티켓이 아니라면?
                 else {
-                    bt.send("0",true);// 티켓 불일치시 구현부
+                    bt.send("0", true);// 티켓 불일치시 구현부
                 }
 //                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
             }
