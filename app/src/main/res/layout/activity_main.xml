@@ -67,18 +67,27 @@
         android:textColor="#FFFFFF"
         />
 
-    <Button
-        android:id="@+id/QRMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/seoulnamsanb"
-        android:background="#086A87"
-        android:text="QR모드"
-        android:textColor="#FFFFFF"
-        />
+        <Button
+            android:id="@+id/QRMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#086A87"
+            android:fontFamily="@font/seoulnamsanb"
+            android:text="QR모드"
+            android:textColor="#FFFFFF" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/NFCMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#086A87"
+            android:fontFamily="@font/seoulnamsanb"
+            android:text="NFC모드"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 
 
 

@@ -120,8 +120,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
-            if (resultCode == Activity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK) {
                 bt.connect(data);
+            }
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 bt.setupService();
@@ -150,10 +151,8 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < 5000; i++) {
                     System.out.println("Test");
                 }
-
                 // 웹서버 결과값 받음
                 String temp = http.GetResult();
-
                 // 예약이 되어있는 티켓이라면?
                 if (temp.equals("true\n")) { // 티켓 일치시 구현부
                     bt.send("1",true);
