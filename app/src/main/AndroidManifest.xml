@@ -16,8 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".NFCActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <activity android:name=".NFCActivity" >
+        </activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="fullSensor"
@@ -25,16 +27,14 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDER_DISCOVERED"/>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <data android:mimeType="text/plain"/>
+                <data android:mimeType="application/vnd.com.example.android.beam"/>
             </intent-filter>
-            <meta-data
-                android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="xml/nfc_tech_filter"/>
-
+<!--            <meta-data-->
+<!--                android:name="android.nfc.action.TECH_DISCOVERED"/>-->
+<!--&lt;!&ndash;                android:resource="xml/nfc_tech_filter"/>&ndash;&gt;-->
         </activity>
     </application>
-
 </manifest>
