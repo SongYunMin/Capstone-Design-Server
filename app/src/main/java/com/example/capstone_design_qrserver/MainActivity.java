@@ -21,13 +21,16 @@ public class MainActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     private BluetoothSPP bt;
     public String Local_hash;
-    public Button nfcButton = findViewById(R.id.NFCMode);
-    public Button QRButton = findViewById(R.id.QRMode);
+    public Button nfcButton;
+    public Button QRButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nfcButton = findViewById(R.id.NFCMode);
+        QRButton = findViewById(R.id.QRMode);
+
         bt = new BluetoothSPP(this); //Initializing
 
         if (!bt.isBluetoothAvailable()) { //블루투스 사용 불가
@@ -37,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+
+        // QR Click Listener
+        QRButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startQR();
+            }
+        });
+
+        // NFC Click Listener
         nfcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,11 +95,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        QRButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startQR();
-            }
-        });
     }
 
     public void startQR() {

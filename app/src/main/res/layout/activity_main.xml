@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -75,7 +76,8 @@
             android:background="#086A87"
             android:fontFamily="@font/seoulnamsanb"
             android:text="QR모드"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/NFCMode"
