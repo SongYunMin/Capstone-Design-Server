@@ -9,6 +9,7 @@ package com.example.capstone_design_qrserver;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,18 +28,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.capstone_design_qrserver.R;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class NFCActivity extends Activity {
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
+
+import static com.example.capstone_design_qrserver.MainActivity.Local_hash;
+
+public class NFCActivity extends AppCompatActivity {
     public static final String ERROR_DETECTED = "No NFC tag detected!";
     public static final String WRITE_SUCCESS = "Text written to the NFC tag successfully!";
     public static final String WRITE_ERROR = "Error during writing, is the NFC tag close enough to your device?";
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     IntentFilter[] writeTagFilters;
+    private BluetoothSPP bt;
     boolean writeMode;
     Tag myTag;
     Context context;
@@ -61,6 +72,14 @@ public class NFCActivity extends Activity {
         message = (TextView) findViewById(R.id.edit_message);
         btnWrite = (Button) findViewById(R.id.button);
         Edit_text = (EditText) findViewById(R.id.edit_message);
+        bt = new BluetoothSPP(this); //Initializing
+
+        if (!bt.isBluetoothAvailable()) { //블루투스 사용 불가
+            Toast.makeText(getApplicationContext()
+                    , "Bluetooth is not available"
+                    , Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         // Write 버튼 이벤트+
         btnWrite.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +158,38 @@ public class NFCActivity extends Activity {
         // Get the Text
         text = new String(buf);
         tvNFCContent.setText("NFC Content: " + text);
-    }
+        if (text.length() > 30) {
+            HttpConnectThread http = new HttpConnectThread(
+                    "http://192.168.0.11/admission.php",
+                    "localhash=" + text);
+            http.start();
 
+            for (int i = 0; i < 5000; i++) {
+                System.out.println("Test");
+            }
+            Log.i("Event","태그됨!!");
+            // 웹서버 결과값 받음
+            String temp = http.GetResult();
+            System.out.println(temp);
+
+            if (temp.equals("true\n")) { // 티켓 일치시 구현부
+//                bt.startService(BluetoothState.DEVICE_OTHER);
+////                bt.send("1", true);
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+
+            }
+            // 예약이 되어있는 티켓이 아니라면?
+            else {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+//                bt.startService(BluetoothState.DEVICE_OTHER);
+//                bt.send("0", true);// 티켓 불일치시 구현부
+            }
+
+        }
+
+    }
 //    public void ServerTransfer(){
 ////        HttpConnectThread http = new HttpConnectThread("http://210.124.110.96/Android_Check.php",
 ////                "memberID="+St_id+"&memberPw="+St_pw);
@@ -187,6 +236,7 @@ public class NFCActivity extends Activity {
     // Tag 되자마자 시작되는 Intent
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         setIntent(intent);
         readFromIntent(intent);
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
@@ -205,6 +255,35 @@ public class NFCActivity extends Activity {
         super.onResume();
         WriteModeOn();
     }
+
+//    public void onDestroy() {
+//        super.onDestroy();
+//        bt.stopService(); //블루투스 중지
+//    }
+//
+//    public void onStart() {
+//        super.onStart();
+//        if (!bt.isBluetoothEnabled()) { //
+//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+//        } else {
+//            if (!bt.isServiceAvailable()) {
+//                bt.setupService();
+//                bt.startService(BluetoothState.DEVICE_OTHER); //DEVICE_ANDROID는 안드로이드 기기 끼리
+//                setup();
+//            }
+//        }
+//    }
+
+    public void setup() {
+        Button btnSend = findViewById(R.id.btnSend); //데이터 전송
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                bt.send("Text", true);
+            }
+        });
+    }
+
 
     /******************************************************************************
      **********************************Enable Write********************************

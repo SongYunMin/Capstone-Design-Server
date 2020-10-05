@@ -20,7 +20,7 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 public class MainActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     private BluetoothSPP bt;
-    public String Local_hash;
+    public static String Local_hash;
     public Button nfcButton;
     public Button QRButton;
 
@@ -181,5 +181,11 @@ public class MainActivity extends AppCompatActivity {
 //                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
             }
         }
+    }
+
+
+
+    public void nfcResult(){
+
     }
 }
