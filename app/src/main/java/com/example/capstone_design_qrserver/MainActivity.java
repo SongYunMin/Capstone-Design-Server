@@ -17,10 +17,13 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
 
+import static com.example.capstone_design_qrserver.NFCActivity.status;
+
 public class MainActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     private BluetoothSPP bt;
     public static String Local_hash;
+    public static String temp;
     public Button nfcButton;
     public Button QRButton;
 
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NFCActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -155,10 +158,9 @@ public class MainActivity extends AppCompatActivity {
             // 데이터가 없다면
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-                // todo
             }
             // 데이터가 있다면
-            else {
+            else if (status == 0) {
                 Local_hash = result.getContents();
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 HttpConnectThread http = new HttpConnectThread(
@@ -169,23 +171,33 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Test");
                 }
                 // 웹서버 결과값 받음
-                String temp = http.GetResult();
+                temp = http.GetResult();
                 // 예약이 되어있는 티켓이라면?
                 if (temp.equals("true\n")) { // 티켓 일치시 구현부
                     bt.send("1", true);
                 }
+
                 // 예약이 되어있는 티켓이 아니라면?
                 else {
                     bt.send("0", true);// 티켓 불일치시 구현부
                 }
+
 //                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
+            }
+        }
+        else if(requestCode == 1) {
+            if (temp.equals("true\n")) { // 티켓 일치시 구현부
+                Toast.makeText(this, "인증 되었습니다. 입장하십시오.",
+                        Toast.LENGTH_SHORT).show();
+                bt.send("1", true);
+            }
+            // 예약이 되어있는 티켓이 아니라면?
+            else {
+                Toast.makeText(this, "존재하지 않는 티켓입니다.",
+                        Toast.LENGTH_SHORT).show();
+                bt.send("0", true);// 티켓 불일치시 구현부
             }
         }
     }
 
-
-
-    public void nfcResult(){
-
-    }
 }

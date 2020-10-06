@@ -29,16 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.capstone_design_qrserver.R;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
+import static com.example.capstone_design_qrserver.MainActivity.temp;
 
 import static com.example.capstone_design_qrserver.MainActivity.Local_hash;
 
@@ -54,9 +47,10 @@ public class NFCActivity extends AppCompatActivity {
     Tag myTag;
     Context context;
 
+
     @SuppressLint("StaticFieldLeak")
     public static TextView tvNFCContent;     // NFC 안에 들어가 있는 값
-    public static String ServerText;        // 서버로 전송될 값
+    public static int status = 0;
     TextView message;
     EditText Edit_text;
     Button btnWrite;
@@ -81,30 +75,30 @@ public class NFCActivity extends AppCompatActivity {
             finish();
         }
 
-        // Write 버튼 이벤트+
-        btnWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Edit_text.setVisibility(View.VISIBLE);
-                try {
-                    // NFC 태그가 되어있지 않은 상태
-                    if (myTag == null) {
-                        Toast.makeText(context, ERROR_DETECTED, Toast.LENGTH_LONG).show();
-                    }
-                    // NFC 태그가 되었다면 SUCCESS Message 출력
-                    else {
-                        write(message.getText().toString(), myTag);
-                        Toast.makeText(context, WRITE_SUCCESS, Toast.LENGTH_LONG).show();
-                    }
-                } catch (IOException e) {
-                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                } catch (FormatException e) {
-                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }
-        });
+//        // Write 버튼 이벤트+
+//        btnWrite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Edit_text.setVisibility(View.VISIBLE);
+//                try {
+//                    // NFC 태그가 되어있지 않은 상태
+//                    if (myTag == null) {
+//                        Toast.makeText(context, ERROR_DETECTED, Toast.LENGTH_LONG).show();
+//                    }
+//                    // NFC 태그가 되었다면 SUCCESS Message 출력
+//                    else {
+//                        write(message.getText().toString(), myTag);
+//                        Toast.makeText(context, WRITE_SUCCESS, Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (IOException e) {
+//                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
+//                    e.printStackTrace();
+//                } catch (FormatException e) {
+//                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         // NFC를 지원하지 않는 단말기일시 Message 출력
@@ -158,7 +152,7 @@ public class NFCActivity extends AppCompatActivity {
         // Get the Text
         text = new String(buf);
         tvNFCContent.setText("NFC Content: " + text);
-        if (text.length() > 30) {
+        if (text.length()> 30) {
             HttpConnectThread http = new HttpConnectThread(
                     "http://192.168.0.11/admission.php",
                     "localhash=" + text);
@@ -169,26 +163,16 @@ public class NFCActivity extends AppCompatActivity {
             }
             Log.i("Event","태그됨!!");
             // 웹서버 결과값 받음
-            String temp = http.GetResult();
+            temp = http.GetResult();
             System.out.println(temp);
-
-            if (temp.equals("true\n")) { // 티켓 일치시 구현부
-//                bt.startService(BluetoothState.DEVICE_OTHER);
-////                bt.send("1", true);
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-
-            }
-            // 예약이 되어있는 티켓이 아니라면?
-            else {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-//                bt.startService(BluetoothState.DEVICE_OTHER);
-//                bt.send("0", true);// 티켓 불일치시 구현부
-            }
-
+            status = 1;
+            Intent intent = new Intent();
+            intent.putExtra("SEND : ", status);
+            setResult(1,intent);
+            finish();
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(intent);
         }
-
     }
 //    public void ServerTransfer(){
 ////        HttpConnectThread http = new HttpConnectThread("http://210.124.110.96/Android_Check.php",
@@ -196,41 +180,41 @@ public class NFCActivity extends AppCompatActivity {
 ////
 ////    }
 
-    /******************************************************************************
-     **********************************Write to NFC Tag****************************
-     ******************************************************************************/
-    private void write(String text, Tag tag) throws IOException, FormatException {
-        NdefRecord[] records = {createRecord(text)};
-        NdefMessage message = new NdefMessage(records);
-        // Get an instance of Ndef for the tag.
-        Ndef ndef = Ndef.get(tag);
-        // Enable I/O
-        ndef.connect();
-        // Write the message
-        ndef.writeNdefMessage(message);
-        // Close the connection
-        ndef.close();
-    }
-
-    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
-        String lang = "en";
-        byte[] textBytes = text.getBytes();
-        byte[] langBytes = lang.getBytes("US-ASCII");
-        int langLength = langBytes.length;
-        int textLength = textBytes.length;
-        byte[] payload = new byte[1 + langLength + textLength];
-
-        // set status byte (see NDEF spec for actual bits)
-        payload[0] = (byte) langLength;
-
-        // copy langbytes and textbytes into payload
-        System.arraycopy(langBytes, 0, payload, 1, langLength);
-        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-
-        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
-
-        return recordNFC;
-    }
+//    /******************************************************************************
+//     **********************************Write to NFC Tag****************************
+//     ******************************************************************************/
+//    private void write(String text, Tag tag) throws IOException, FormatException {
+//        NdefRecord[] records = {createRecord(text)};
+//        NdefMessage message = new NdefMessage(records);
+//        // Get an instance of Ndef for the tag.
+//        Ndef ndef = Ndef.get(tag);
+//        // Enable I/O
+//        ndef.connect();
+//        // Write the message
+//        ndef.writeNdefMessage(message);
+//        // Close the connection
+//        ndef.close();
+//    }
+//
+//    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
+//        String lang = "en";
+//        byte[] textBytes = text.getBytes();
+//        byte[] langBytes = lang.getBytes("US-ASCII");
+//        int langLength = langBytes.length;
+//        int textLength = textBytes.length;
+//        byte[] payload = new byte[1 + langLength + textLength];
+//
+//        // set status byte (see NDEF spec for actual bits)
+//        payload[0] = (byte) langLength;
+//
+//        // copy langbytes and textbytes into payload
+//        System.arraycopy(langBytes, 0, payload, 1, langLength);
+//        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+//
+//        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
+//
+//        return recordNFC;
+//    }
 
 
     // Tag 되자마자 시작되는 Intent
@@ -256,24 +240,6 @@ public class NFCActivity extends AppCompatActivity {
         WriteModeOn();
     }
 
-//    public void onDestroy() {
-//        super.onDestroy();
-//        bt.stopService(); //블루투스 중지
-//    }
-//
-//    public void onStart() {
-//        super.onStart();
-//        if (!bt.isBluetoothEnabled()) { //
-//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
-//        } else {
-//            if (!bt.isServiceAvailable()) {
-//                bt.setupService();
-//                bt.startService(BluetoothState.DEVICE_OTHER); //DEVICE_ANDROID는 안드로이드 기기 끼리
-//                setup();
-//            }
-//        }
-//    }
 
     public void setup() {
         Button btnSend = findViewById(R.id.btnSend); //데이터 전송
