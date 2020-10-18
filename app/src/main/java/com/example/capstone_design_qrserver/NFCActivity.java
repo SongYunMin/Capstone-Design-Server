@@ -170,8 +170,8 @@ public class NFCActivity extends AppCompatActivity {
             intent.putExtra("SEND : ", status);
             setResult(1,intent);
             finish();
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
+            Intent intent_ = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent_);
         }
     }
 //    public void ServerTransfer(){

@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else if(requestCode == 1) {
+
             if (temp.equals("true\n")) { // 티켓 일치시 구현부
                 Toast.makeText(this, "인증 되었습니다. 입장하십시오.",
                         Toast.LENGTH_SHORT).show();

@@ -59,7 +59,7 @@
         android:fontFamily="@font/seoulnamsanb"
         android:textSize="30dp"
         android:textColor="#FFFFFF"
-        android:text="스마트폰 뒷면을 태그해 주세요"
+        android:text="Waiting..."
         />
 
     <ImageView
