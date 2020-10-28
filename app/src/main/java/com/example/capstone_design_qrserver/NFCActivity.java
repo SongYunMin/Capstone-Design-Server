@@ -7,21 +7,15 @@ package com.example.capstone_design_qrserver;
  */
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.PendingIntent;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,10 +25,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 import static com.example.capstone_design_qrserver.MainActivity.temp;
-
 import static com.example.capstone_design_qrserver.MainActivity.Local_hash;
 
 public class NFCActivity extends AppCompatActivity {
@@ -76,30 +68,6 @@ public class NFCActivity extends AppCompatActivity {
             finish();
         }
 
-//        // Write 버튼 이벤트+
-//        btnWrite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Edit_text.setVisibility(View.VISIBLE);
-//                try {
-//                    // NFC 태그가 되어있지 않은 상태
-//                    if (myTag == null) {
-//                        Toast.makeText(context, ERROR_DETECTED, Toast.LENGTH_LONG).show();
-//                    }
-//                    // NFC 태그가 되었다면 SUCCESS Message 출력
-//                    else {
-//                        write(message.getText().toString(), myTag);
-//                        Toast.makeText(context, WRITE_SUCCESS, Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (IOException e) {
-//                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
-//                    e.printStackTrace();
-//                } catch (FormatException e) {
-//                    Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG).show();
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         // NFC를 지원하지 않는 단말기일시 Message 출력
@@ -115,7 +83,6 @@ public class NFCActivity extends AppCompatActivity {
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
         writeTagFilters = new IntentFilter[]{tagDetected};
     }
-
 
     /******************************************************************************
      **********************************Read From NFC Tag***************************
@@ -168,9 +135,6 @@ public class NFCActivity extends AppCompatActivity {
             intent.putExtra("SEND : ", status);
             setResult(1, intent);
             finish();
-//            startActivity(intent);
-//            Intent intent_ = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent_);
         }
     }
 

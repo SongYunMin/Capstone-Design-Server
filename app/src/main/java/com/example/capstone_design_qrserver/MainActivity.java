@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             }
             // 데이터가 있다면
+            // TODO : Status 값 QR 모드 시 0으로 진입 안되는 장애 있음
             else if (status == 0) {
                 Local_hash = result.getContents();
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
 //                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
             }
+            // NFC 모드
         } else if (requestCode == 1) {
             if (temp.equals("true\n")) { // 티켓 일치시 구현부
                 Toast.makeText(this, "인증 되었습니다. 입장하십시오.",
