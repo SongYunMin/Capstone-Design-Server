@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 Local_hash = result.getContents();
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 HttpConnectThread http = new HttpConnectThread(
-                        "http://192.168.0.11/admission.php",
+                        "http://192.168.0.108/admission.php",
                         "localhash=" + Local_hash);
                 http.start();
                 for (int i = 0; i < 5000; i++) {
@@ -174,19 +174,21 @@ public class MainActivity extends AppCompatActivity {
                 temp = http.GetResult();
                 // 예약이 되어있는 티켓이라면?
                 if (temp.equals("true\n")) { // 티켓 일치시 구현부
+                    Toast.makeText(this, "인증 되었습니다. 입장하십시오.",
+                            Toast.LENGTH_SHORT).show();
                     bt.send("1", true);
                 }
 
                 // 예약이 되어있는 티켓이 아니라면?
                 else {
+                    Toast.makeText(this, "존재하지 않는 티켓입니다.",
+                            Toast.LENGTH_SHORT).show();
                     bt.send("0", true);// 티켓 불일치시 구현부
                 }
 
 //                qrScan.initiateScan();              // 재귀적 구현 (Loop 위해)
             }
-        }
-        else if(requestCode == 1) {
-
+        } else if (requestCode == 1) {
             if (temp.equals("true\n")) { // 티켓 일치시 구현부
                 Toast.makeText(this, "인증 되었습니다. 입장하십시오.",
                         Toast.LENGTH_SHORT).show();

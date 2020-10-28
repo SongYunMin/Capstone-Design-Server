@@ -29,8 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
+
 import static com.example.capstone_design_qrserver.MainActivity.temp;
 
 import static com.example.capstone_design_qrserver.MainActivity.Local_hash;
@@ -46,7 +48,6 @@ public class NFCActivity extends AppCompatActivity {
     boolean writeMode;
     Tag myTag;
     Context context;
-
 
     @SuppressLint("StaticFieldLeak")
     public static TextView tvNFCContent;     // NFC 안에 들어가 있는 값
@@ -141,7 +142,6 @@ public class NFCActivity extends AppCompatActivity {
         if (msgs == null || msgs.length == 0) return;
 
         String text = "";
-//        String tagId = new String(msgs[0].getRecords()[0].getType());
         byte[] payload = msgs[0].getRecords()[0].getPayload();
         byte[] buf = new byte[300];
         buf = payload;
@@ -152,70 +152,27 @@ public class NFCActivity extends AppCompatActivity {
         // Get the Text
         text = new String(buf);
         tvNFCContent.setText("NFC Content: " + text);
-        if (text.length()> 30) {
+        if (text.length() > 30) {
             HttpConnectThread http = new HttpConnectThread(
-                    "http://192.168.0.11/admission.php",
+                    "http://192.168.0.108/admission.php",
                     "localhash=" + text);
             http.start();
-
             for (int i = 0; i < 5000; i++) {
                 System.out.println("Test");
             }
-            Log.i("Event","태그됨!!");
             // 웹서버 결과값 받음
             temp = http.GetResult();
-            System.out.println(temp);
             status = 1;
-            Intent intent = new Intent();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            // putExtra : 인텐트를 통해 값을 넘김
             intent.putExtra("SEND : ", status);
-            setResult(1,intent);
+            setResult(1, intent);
             finish();
-            Intent intent_ = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent_);
+//            startActivity(intent);
+//            Intent intent_ = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(intent_);
         }
     }
-//    public void ServerTransfer(){
-////        HttpConnectThread http = new HttpConnectThread("http://210.124.110.96/Android_Check.php",
-////                "memberID="+St_id+"&memberPw="+St_pw);
-////
-////    }
-
-//    /******************************************************************************
-//     **********************************Write to NFC Tag****************************
-//     ******************************************************************************/
-//    private void write(String text, Tag tag) throws IOException, FormatException {
-//        NdefRecord[] records = {createRecord(text)};
-//        NdefMessage message = new NdefMessage(records);
-//        // Get an instance of Ndef for the tag.
-//        Ndef ndef = Ndef.get(tag);
-//        // Enable I/O
-//        ndef.connect();
-//        // Write the message
-//        ndef.writeNdefMessage(message);
-//        // Close the connection
-//        ndef.close();
-//    }
-//
-//    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
-//        String lang = "en";
-//        byte[] textBytes = text.getBytes();
-//        byte[] langBytes = lang.getBytes("US-ASCII");
-//        int langLength = langBytes.length;
-//        int textLength = textBytes.length;
-//        byte[] payload = new byte[1 + langLength + textLength];
-//
-//        // set status byte (see NDEF spec for actual bits)
-//        payload[0] = (byte) langLength;
-//
-//        // copy langbytes and textbytes into payload
-//        System.arraycopy(langBytes, 0, payload, 1, langLength);
-//        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-//
-//        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
-//
-//        return recordNFC;
-//    }
-
 
     // Tag 되자마자 시작되는 Intent
     @Override
