@@ -121,7 +121,7 @@ public class NFCActivity extends AppCompatActivity {
         tvNFCContent.setText("NFC Content: " + text);
         if (text.length() > 30) {
             HttpConnectThread http = new HttpConnectThread(
-                    "http://192.168.0.108/admission.php",
+                    "http://211.247.111.75/admission.php:9950",
                     "localhash=" + text);
             http.start();
             for (int i = 0; i < 5000; i++) {

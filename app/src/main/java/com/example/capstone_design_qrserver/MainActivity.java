@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-
         // QR Click Listener
         QRButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 Local_hash = result.getContents();
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 HttpConnectThread http = new HttpConnectThread(
-                        "http://192.168.0.108/admission.php",
+                        "http://211.247.111.75/admission.php:9950",
                         "localhash=" + Local_hash);
                 http.start();
                 for (int i = 0; i < 5000; i++) {
