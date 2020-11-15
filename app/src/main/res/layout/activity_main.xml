@@ -129,18 +129,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3. 연결후에 'QR모드'로 진입하세요"
-        android:textSize="20dp"
-        android:fontFamily="@font/seoulnamsanb"
-        android:layout_marginTop="10dp"
         android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/seoulnamsanb"
+        android:text="3. 연결후에 'NFC'모드로 진입하세요"
         android:textColor="#FFFFFF"
-        />
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4. 해싱된 QR코드를 Read하세요"
+        android:text="4. 해싱된 NFC를 Tag하세요"
         android:textSize="20dp"
         android:fontFamily="@font/seoulnamsanb"
         android:layout_marginTop="10dp"
